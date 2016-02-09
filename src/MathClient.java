@@ -11,6 +11,8 @@ public class MathClient {
             int token = exam.login(123456, "lala");
             List<String> l = exam.getAvailableSummary(token,123456);
             System.out.println(l);
+            Assessment a = exam.getAssessment(token, 123456, "4ECE");
+            System.out.println(a.getInformation());
         }
         catch (Exception e) {
             System.err.println("MathClient exception");

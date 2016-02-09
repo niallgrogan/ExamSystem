@@ -1,15 +1,23 @@
+import sun.org.mozilla.javascript.internal.ast.Assignment;
+
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class ExamEngine implements ExamServer {
 
+    private List<String> assessmentList = new ArrayList<String>(1);
+    private Assessment ass1;
+
     // Constructor is required
     public ExamEngine() {
-        super();
+        //super();
+        assessmentList.add("MathsMCQ");
+        ass1 = new MathsMCQ();
     }
 
     // Implement the methods defined in the ExamServer interface...
@@ -32,17 +40,14 @@ public class ExamEngine implements ExamServer {
 
         if (token == 999) {
             if (studentid == 123456) {
-                List<String> l = Arrays.asList("test1","test2","test3");
-                return l;
+                return assessmentList;
             }
             else {
-                throw new NoMatchingAssessment("Not Mathcing Assessment for Student");
-                //Not sure if I need to return anything
+                throw new NoMatchingAssessment("Not Matching Assessment for Student");
             }
         }
         else {
             throw new UnauthorizedAccess("Student Does not have Access to this List");
-            //Not sure if I need to return anything
         }
     }
 
@@ -53,25 +58,19 @@ public class ExamEngine implements ExamServer {
         if (token == 999) {
             if (studentid == 123456) {
                 if (courseCode.equals("4ECE")) {
-                    //Return some assessment object
+                    return ass1;
                 }
                 else {
                     throw new NoMatchingAssessment("Not Matching Assessment for Course Code");
                 }
             }
             else {
-                throw new NoMatchingAssessment("Not Matchcing Assessment for Student");
-                //Not sure if I need to return anything
+                throw new NoMatchingAssessment("Not Matching Assessment for Student");
             }
         }
         else {
             throw new UnauthorizedAccess("Student Does not have Access to this List");
-            //Not sure if I need to return anything
         }
-        // TBD: You need to implement this method!
-        // For the moment method just returns an empty or null value to allow it to compile
-
-        return null;
     }
 
     // Submit a completed assessment
