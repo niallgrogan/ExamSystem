@@ -17,7 +17,7 @@ public class ExamEngine implements ExamServer {
     public int login(int studentid, String password) throws 
                 UnauthorizedAccess, RemoteException {
 
-        if (studentid == 123456) {
+        if (studentid == 123456 & password.equals("lala")) {
             return 999;
         }
         else {
