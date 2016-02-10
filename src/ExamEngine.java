@@ -24,13 +24,13 @@ public class ExamEngine implements ExamServer {
     public int login(int studentid, String password) throws 
                 UnauthorizedAccess, RemoteException {
 
-        if (studentid == 123456 & password.equals("lala")) {
-            return 999;
+        if (studentid == 123456) {
+            if (password.equals("lala")) {
+                return 999;
+            }
+            else {throw new UnauthorizedAccess("Invalid Password");}
         }
-        else {
-            throw new UnauthorizedAccess("Invalid Student ID");
-            //Not sure if I need to return anything
-        }
+        else {throw new UnauthorizedAccess("Invalid Student ID");}
     }
 
     // Return a summary list of Assessments currently available for this studentid
