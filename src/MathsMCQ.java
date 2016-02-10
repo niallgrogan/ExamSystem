@@ -1,3 +1,4 @@
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -7,8 +8,9 @@ public class MathsMCQ implements Assessment{
 
     private int numQuestions = 2;
     private int numAnswerOptions = 4;
+    private String closingDate = "21/12/2015";
     //Not sure how these should be instantiated
-    private List<Question> questionList = new ArrayList<Question>(2);
+    private List<Question> questionList = new ArrayList<>(2);
     private int[] selectedAnswers = {0,0};
 
     public MathsMCQ() {
@@ -30,8 +32,12 @@ public class MathsMCQ implements Assessment{
 
     // Return the final date / time for submission of completed assessment
     public Date getClosingDate() {
-        //Return the current date for now
-        Date d = new Date();
+        Date d = null;
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            d = sdf.parse(closingDate);
+        }
+        catch (Exception e) {e.printStackTrace();}
         return d;
     }
 

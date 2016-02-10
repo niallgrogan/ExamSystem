@@ -79,15 +79,12 @@ public class ExamEngine implements ExamServer {
         //For the moment we are assuming the user can only submit one type of assignment
         String identifier = Integer.toString(studentid);
         Date timeOfSubmission = new Date();
-        //if(timeOfSubmission.before(completed.getClosingDate())) {
-            completedAssignments.put(identifier,completed);
-        //}
-        /*
-        This line only prints in de-bug mode, probably due to the fact that it
-        takes time for the values to enter the hash map.
-         */
-        //System.out.println(completedAssignments.get(identifier).getInformation());
-        // TBD: You need to implement this method!
+        if(timeOfSubmission.before(completed.getClosingDate())) {
+            completedAssignments.put(identifier, completed);
+        }
+        else {
+            System.out.println("Deadline Expired");
+        }
     }
 
     public String queryResults(int token, int studentid, String courseCode) throws
