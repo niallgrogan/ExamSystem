@@ -4,14 +4,13 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class ExamEngine implements ExamServer {
 
-    private List<String> assessmentList = new ArrayList<String>(1);
+    private List<String> assessmentList = new ArrayList<>(1);
     private Assessment ass1;
+    private Map<String, Assessment> completedAssignments = new HashMap<>();
 
     // Constructor is required
     public ExamEngine() {
@@ -77,7 +76,23 @@ public class ExamEngine implements ExamServer {
     public void submitAssessment(int token, int studentid, Assessment completed) throws 
                 UnauthorizedAccess, NoMatchingAssessment, RemoteException {
 
+        //For the moment we are assuming the user can only submit one type of assignment
+        String identifier = Integer.toString(studentid);
+        Date timeOfSubmission = new Date();
+        //if(timeOfSubmission.before(completed.getClosingDate())) {
+            completedAssignments.put(identifier,completed);
+        //}
+        /*
+        This line only prints in de-bug mode, probably due to the fact that it
+        takes time for the values to enter the hash map.
+         */
+        //System.out.println(completedAssignments.get(identifier).getInformation());
         // TBD: You need to implement this method!
+    }
+
+    public String queryResults(int token, int studentid, String courseCode) throws
+                UnauthorizedAccess, NoMatchingAssessment, RemoteException {
+        return Integer.toString(completedAssignments.get(Integer.toString(studentid)).getSelectedAnswer(1));
     }
 
     public static void main(String[] args) {

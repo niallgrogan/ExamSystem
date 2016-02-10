@@ -13,6 +13,26 @@ public class MathClient {
             System.out.println(l);
             Assessment a = exam.getAssessment(token, 123456, "4ECE");
             System.out.println(a.getInformation());
+            System.out.println(a.getClosingDate());
+            System.out.println(a.getQuestions());
+            System.out.println(a.getQuestion(1).getQuestionNumber());
+            System.out.println(a.getQuestion(1).getQuestionDetail());
+            String[] answers = a.getQuestion(1).getAnswerOptions();
+            for (int i=0; i<answers.length;i++) {
+                System.out.println("Option "+(i+1)+":"+answers[i]);
+            }
+            a.selectAnswer(1,2);
+            System.out.println(a.getSelectedAnswer(1));
+            a.selectAnswer(1,3);
+            System.out.println(a.getSelectedAnswer(1));
+            a.selectAnswer(2,4);
+            System.out.println(a.getSelectedAnswer(2));
+            exam.submitAssessment(token,123456,a);
+            System.out.println(exam.queryResults(token, 123456, "4ECE"));
+
+            a.selectAnswer(1,4);
+            exam.submitAssessment(token,123456,a);
+            System.out.println(exam.queryResults(token, 123456, "4ECE"));
         }
         catch (Exception e) {
             System.err.println("MathClient exception");

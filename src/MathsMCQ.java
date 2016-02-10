@@ -45,8 +45,8 @@ public class MathsMCQ implements Assessment{
             InvalidQuestionNumber {
 
         switch (questionNumber) {
-            case 1: return questionList.get(1);
-            case 2: return questionList.get(2);
+            case 1: return questionList.get(0);
+            case 2: return questionList.get(1);
             default: throw new InvalidQuestionNumber();
         }
     }
@@ -56,7 +56,7 @@ public class MathsMCQ implements Assessment{
             InvalidQuestionNumber, InvalidOptionNumber {
         if(questionNumber <= numQuestions & questionNumber > 0) {
             if (optionNumber <= numAnswerOptions & optionNumber > 0) {
-                selectedAnswers[questionNumber] = optionNumber;
+                selectedAnswers[questionNumber-1] = optionNumber;
             }
             else {throw new InvalidOptionNumber();}
         }
@@ -64,8 +64,12 @@ public class MathsMCQ implements Assessment{
     }
 
     // Return selected answer or zero if none selected yet
+    /*
+    Currently returning the option number selected as opposed to the answer
+    itself.
+     */
     public int getSelectedAnswer(int questionNumber) {
-        return selectedAnswers[questionNumber];
+        return selectedAnswers[questionNumber-1];
     }
 
     // Return studentid associated with this assessment object
