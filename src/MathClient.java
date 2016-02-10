@@ -1,6 +1,7 @@
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.List;
+import java.util.Scanner;
 
 public class MathClient {
     public static void main(String args[]) {
@@ -8,7 +9,12 @@ public class MathClient {
             String name = "ExamServer";
             Registry registry = LocateRegistry.getRegistry("localhost");
             ExamServer exam = (ExamServer) registry.lookup(name);
-            int token = exam.login(123456, "lala");
+            Scanner in = new Scanner(System.in);
+            System.out.println("Enter Username");
+            int username = Integer.parseInt(in.nextLine());
+            System.out.println("Enter Password");
+            String password = in.nextLine();
+            int token = exam.login(username, password);
             List<String> l = exam.getAvailableSummary(token,123456);
             System.out.println(l);
             Assessment a = exam.getAssessment(token, 123456, "4ECE");

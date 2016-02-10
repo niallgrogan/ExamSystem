@@ -8,7 +8,7 @@ public class MathsMCQ implements Assessment{
 
     private int numQuestions = 2;
     private int numAnswerOptions = 4;
-    private String closingDate = "21/12/2015";
+    private String closingDate = "21/12/2016";
     //Not sure how these should be instantiated
     private List<Question> questionList = new ArrayList<>(2);
     private int[] selectedAnswers = {0,0};
