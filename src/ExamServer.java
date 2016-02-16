@@ -21,7 +21,7 @@ public interface ExamServer extends Remote {
 		UnauthorizedAccess, NoMatchingAssessment, RemoteException;
 
 	//Query Assessment Results
-	public String queryResults(int token, String studentid, String courseCode) throws
+	public boolean[] queryResults(int token, String studentid, String courseCode) throws
 			UnauthorizedAccess, NoMatchingAssessment, RemoteException;
 
 }

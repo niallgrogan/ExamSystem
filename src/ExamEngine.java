@@ -14,6 +14,7 @@ public class ExamEngine implements ExamServer {
     public ExamEngine() {
         //super();
         assessmentList.add("Maths MCQ");
+        assessmentList.add("Programming MCQ");
         ass1 = new MathsMCQ();
     }
 
@@ -65,7 +66,8 @@ public class ExamEngine implements ExamServer {
         try { 
 	    	if (token == 999) {
 	            if (studentid.equals("a")) {
-	                if (courseCode.equals("4ECE")) {
+	                if (courseCode.equals("Maths MCQ")) {
+                        return ass1;
 	                }
 	                else {
 	                    throw new NoMatchingAssessment("No Matching Assessment for Course Code " + courseCode);
@@ -81,9 +83,7 @@ public class ExamEngine implements ExamServer {
         } catch(Exception e) {
         	System.out.println(e.getMessage());
         }
-        
-        return ass1;
-      
+        return null;
     }
 
     // Submit a completed assessment
@@ -101,9 +101,21 @@ public class ExamEngine implements ExamServer {
         }
     }
 
-    public String queryResults(int token, String studentid, String courseCode) throws
+    public boolean[] queryResults(int token, String studentid, String courseCode) throws
                 UnauthorizedAccess, NoMatchingAssessment, RemoteException {
-        return Integer.toString(completedAssignments.get(studentid).getSelectedAnswer(1));
+
+        int[] usersAnswers = completedAssignments.get(studentid).getUserAnswers();
+        int[] answers = completedAssignments.get(studentid).getAnswers();
+        boolean[] results = new boolean[answers.length];
+
+        for(int i=0; i<usersAnswers.length; i++) {
+            if(usersAnswers[i] == answers[i]) {
+                results[i] = true;
+            }
+            else {results[i] = false;}
+        }
+
+        return results;
     }
 
     public static void main(String[] args) {

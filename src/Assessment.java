@@ -29,6 +29,10 @@ public interface Assessment extends Serializable {
 	// This will be preset on the server before object is downloaded
 	public String getAssociatedID();
 
+	public int[] getAnswers();
+
+	public int[] getUserAnswers();
+
 }
 
 

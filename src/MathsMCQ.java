@@ -12,6 +12,7 @@ public class MathsMCQ implements Assessment {
     //Not sure how these should be instantiated
     private List<Question> questionList = new ArrayList<>(2);
     private int[] selectedAnswers = {0,0};
+    private int[] answers = {4,2};
 
     public MathsMCQ() {
         //Not sure if this is needed
@@ -23,6 +24,14 @@ public class MathsMCQ implements Assessment {
         //This may be an issue
         questionList.add(qs1);
         questionList.add(qs2);
+    }
+
+    public int[] getAnswers() {
+        return answers;
+    }
+
+    public int[] getUserAnswers() {
+        return selectedAnswers;
     }
 
     // Return information about the assessment
