@@ -1,3 +1,7 @@
+/*
+Niall Grogan - 12429338
+Stephen Dooley - 12502947
+ */
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -15,7 +19,6 @@ public class ExamEngine implements ExamServer {
         //super();
         assessmentList.add("Maths MCQ");
         assessmentList.add("Programming MCQ");
-        ass1 = new MathsMCQ();
     }
 
     // Implement the methods defined in the ExamServer interface...
@@ -23,41 +26,42 @@ public class ExamEngine implements ExamServer {
     public int login(String studentid, String password) throws 
                 UnauthorizedAccess, RemoteException {
 
-    	// allow user attempt to login 10 times
-    	int count = 0;
-    	int maxTries = 10;
-    	while (true) {
-//    		try {
-    			if (studentid.equals("a")) {
-		            if (password.equals("a")) {
-		                return 999;
-		            }
-		            else {throw new UnauthorizedAccess("Invalid Password");}
-		        }
-		        else {throw new UnauthorizedAccess("Invalid Student ID");}
-//    		} catch (UnauthorizedAccess e) {
-//    			System.out.println("HERE ***************");
-//    			if (++count == maxTries) throw e;
-//    			else System.out.println(e.getMessage());
-//    		}
-    	}
+        try {
+            if (studentid.equals("a")) {
+                if (password.equals("a")) {
+                    return 999;
+                }
+                else {throw new UnauthorizedAccess("Invalid Password");}
+            }
+            else {throw new UnauthorizedAccess("Invalid Student ID");}
+        } catch (UnauthorizedAccess e) {
+            int errorCode = 100;
+            System.out.println("Error Code: " + errorCode);
+            System.out.println(e.getMessage() + "\n");
+
+            return errorCode;
+        }
     }
 
     // Return a summary list of Assessments currently available for this studentid
     public List<String> getAvailableSummary(int token, String studentid) throws
                 UnauthorizedAccess, NoMatchingAssessment, RemoteException {
 
-        if (token == 999) {
-            if (studentid.equals("a")) {
-                return assessmentList;
+        try {
+            if (token == 999) {
+                if (studentid.equals("a")) {
+                    return assessmentList;
+                } else {
+                    throw new NoMatchingAssessment("No Matching Assessment for Student");
+                }
+            } else {
+                throw new UnauthorizedAccess("Student Does not have Access to this List");
             }
-            else {
-                throw new NoMatchingAssessment("No Matching Assessment for Student");
-            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage() + "\n");
+            return null;
         }
-        else {
-            throw new UnauthorizedAccess("Student Does not have Access to this List");
-        }
+
     }
 
     // Return an Assessment object associated with a particular course code
@@ -67,8 +71,13 @@ public class ExamEngine implements ExamServer {
 	    	if (token == 999) {
 	            if (studentid.equals("a")) {
 	                if (courseCode.equals("Maths MCQ")) {
+                        ass1 = new MathsMCQ(studentid);
                         return ass1;
 	                }
+                    else if(courseCode.equals("Programming MCQ")) {
+                        ass1 = new ProgrammingMCQ(studentid);
+                        return ass1;
+                    }
 	                else {
 	                    throw new NoMatchingAssessment("No Matching Assessment for Course Code " + courseCode);
 	                }

@@ -1,3 +1,7 @@
+/*
+Niall Grogan - 12429338
+Stephen Dooley - 12502947
+ */
 import java.io.Serializable;
 
 public interface Question extends Serializable {

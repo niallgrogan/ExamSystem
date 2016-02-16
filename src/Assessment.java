@@ -1,4 +1,7 @@
-// Assessment.java
+/*
+Niall Grogan - 12429338
+Stephen Dooley - 12502947
+ */
 import java.util.Date;
 import java.util.List;
 import java.io.Serializable;

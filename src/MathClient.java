@@ -1,3 +1,7 @@
+/*
+Niall Grogan - 12429338
+Stephen Dooley - 12502947
+ */
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -13,19 +17,34 @@ public class MathClient {
             ExamServer exam = (ExamServer) registry.lookup(name);
             Scanner in = new Scanner(System.in);
             boolean completed = false;
+            boolean loginSuccesfull = false;
+            String user = "";
+
+            String username = "";
+            String password = "";
+            int token = 0;
 
             //Logging in
-            System.out.println("Enter Username");
-            String username = in.nextLine();
-            System.out.println("Enter Password");
-            String password = in.nextLine();
-            int token = exam.login(username, password);
+            while(!loginSuccesfull) {
+                System.out.println("Enter Username");
+                username = in.nextLine();
+                System.out.println("Enter Password");
+                password = in.nextLine();
+                token = exam.login(username, password);
+                if (token == 100) {
+                    loginSuccesfull = false;
+                    System.out.println("\nInvalid login credentials");
+                }
+                else if (token == 999) {
+                    loginSuccesfull = true;
+                }
+            }
 
             while(!completed) {
                 displayAssignments(in, exam, token, username);
 
                 Assessment a = startAssignment(in, exam, token, username);
-
+                user = a.getAssociatedID();
                 gradeAssessment(in, exam, token, username, a);
 
                 System.out.println("\nWould you like to make another submission? (y/n)");
@@ -35,7 +54,7 @@ public class MathClient {
                 }
             }
 
-            System.out.println("\nYou will now be logged out");
+            System.out.println("\nUser '"+user+"' has been logged out");
         }
         catch (Exception e) {
             System.err.println("MathClient exception");
@@ -68,14 +87,16 @@ public class MathClient {
         String showAssignments = in.nextLine();
         if(showAssignments.equals("y")) {
             List<String> l = exam.getAvailableSummary(token, username);
-            System.out.println(l);
+            if(l == null) System.out.println("No assessments available for student: " + username
+                                           + "\nPlease come back later");
+            else System.out.println(l);
         }
     }
 
     private static Assessment startAssignment(Scanner in, ExamServer exam, int token, String username) throws
             UnauthorizedAccess, NoMatchingAssessment, RemoteException, InvalidOptionNumber, InvalidQuestionNumber {
 
-        System.out.println("\nPlease enter the course code of the assignment you wish to complete:");
+        System.out.println("\nPlease enter the name of the assessment you wish to complete:");
         String courseCode = in.nextLine();
         Assessment a = exam.getAssessment(token, username, courseCode);
         System.out.println("\n"+a.getInformation());

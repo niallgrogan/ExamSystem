@@ -7,22 +7,22 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class MathsMCQ implements Assessment {
+public class ProgrammingMCQ implements Assessment {
 
     private int numQuestions = 2;
     private int numAnswerOptions = 4;
     private String closingDate = "21/12/2016";
     private List<Question> questionList = new ArrayList<>(2);
     private int[] selectedAnswers = {0,0};
-    private int[] answers = {4,2};
+    private int[] answers = {1,4};
     private String studentid;
 
-    public MathsMCQ(String username) {
+    public ProgrammingMCQ(String username) {
         studentid = username;
-        String[] qs1Answers = {"1","2","3","4"};
-        MathsQuestions qs1 = new MathsQuestions(1,"2+2=",qs1Answers);
-        String[] qs2Answers = {"2","3","4","5"};
-        MathsQuestions qs2 = new MathsQuestions(2,"2+1=",qs2Answers);
+        String[] qs1Answers = {"Great","Hard","Useful","Java"};
+        MathsQuestions qs1 = new MathsQuestions(1,"Polymorphism is ______",qs1Answers);
+        String[] qs2Answers = {"Abstract","Concrete","Fluid","Great"};
+        MathsQuestions qs2 = new MathsQuestions(2,"An abstract class is _____",qs2Answers);
         questionList.add(qs1);
         questionList.add(qs2);
     }
@@ -36,10 +36,10 @@ public class MathsMCQ implements Assessment {
     }
 
     public String getInformation() {
-    	String info = "This is a Maths Assessment" +
-    			      "\nNumber of questions: " + Integer.toString(numQuestions) + 
-    			      "\nClosing Date: " + closingDate;
-    	
+        String info = "This is a Programming Assessment" +
+                "\nNumber of questions: " + Integer.toString(numQuestions) +
+                "\nClosing Date: " + closingDate;
+
         return info;
     }
 
@@ -93,3 +93,4 @@ public class MathsMCQ implements Assessment {
         return studentid;
     }
 }
+
