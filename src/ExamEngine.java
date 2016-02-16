@@ -91,42 +91,45 @@ public class ExamEngine implements ExamServer {
         //For the moment we are assuming the user can only submit one type of assignment
         String identifier = completed.getAssociatedID();
         Date timeOfSubmission = new Date();
-        //Ensures the user cannot submit after
+        //Ensures the user cannot submit after the due date
         if(timeOfSubmission.before(completed.getClosingDate())) {
             completedAssignments.put(identifier, completed);
             return "Submission Confirmed";
         }
-        else {
-            return "Deadline Expired";
-        }
+        else {return "Deadline Expired";}
     }
 
+    //Allows user to query their assessment results
     public boolean[] queryResults(int token, String studentid) throws
                 UnauthorizedAccess, NoMatchingAssessment, RemoteException {
 
+        //Actual answers to the assignment
         int[] answers = completedAssignments.get(studentid).getAnswers();
+        //Array of either true or false depending on whether the answer is correct,
+        //to be returned to the client
         boolean[] results = new boolean[answers.length];
-
         for(int i=0; i<answers.length; i++) {
             if(completedAssignments.get(studentid).getSelectedAnswer(i+1) == answers[i]) {
                 results[i] = true;
             }
             else {results[i] = false;}
         }
-
         return results;
     }
 
     public static void main(String[] args) {
+        //Installing a security manager
         if (System.getSecurityManager() == null) {
             System.setProperty("java.security.policy", "java.policy");
             System.setSecurityManager(new SecurityManager());
         }
         try {
+            //Setting up server
             String name = "ExamServer";
             ExamServer engine = new ExamEngine();
             ExamServer stub =
                 (ExamServer) UnicastRemoteObject.exportObject(engine, 0);
+            //Getting registry and binding ExamServer to it
             Registry registry = LocateRegistry.getRegistry();
             registry.rebind(name, stub);
             System.out.println("ExamEngine bound");

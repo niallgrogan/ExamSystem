@@ -13,7 +13,9 @@ public class MathsMCQ implements Assessment {
     private int numAnswerOptions = 4;
     private String closingDate = "21/12/2016";
     private List<Question> questionList = new ArrayList<>(2);
+    //Users answers
     private int[] selectedAnswers = {0,0};
+    //Actual answers
     private int[] answers = {4,2};
     private String studentid;
 
@@ -31,6 +33,7 @@ public class MathsMCQ implements Assessment {
         return answers;
     }
 
+    //Information about the assessment
     public String getInformation() {
     	return "This is a Maths Assessment" +
     			      "\nNumber of questions: " + Integer.toString(numQuestions) + 
