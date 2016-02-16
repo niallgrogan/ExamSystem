@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-public class MathsMCQ implements Assessment{
+public class MathsMCQ implements Assessment {
 
     private int numQuestions = 2;
     private int numAnswerOptions = 4;
@@ -17,9 +17,9 @@ public class MathsMCQ implements Assessment{
         //Not sure if this is needed
         //super();
         String[] qs1Answers = {"1","2","3","4"};
-        QuestionOne qs1 = new QuestionOne(1,"2+2=",qs1Answers);
+        MathsQuestions qs1 = new MathsQuestions(1,"2+2=",qs1Answers);
         String[] qs2Answers = {"2","3","4","5"};
-        QuestionOne qs2 = new QuestionOne(2,"2+1=",qs2Answers);
+        MathsQuestions qs2 = new MathsQuestions(2,"2+1=",qs2Answers);
         //This may be an issue
         questionList.add(qs1);
         questionList.add(qs2);
@@ -27,7 +27,11 @@ public class MathsMCQ implements Assessment{
 
     // Return information about the assessment
     public String getInformation() {
-        return "This is a Maths Assessment";
+    	String info = "This is a Maths Assessment" +
+    			      "\nNumber of questions: " + Integer.toString(numQuestions) + 
+    			      "\nClosing Date: " + closingDate;
+    	
+        return info;
     }
 
     // Return the final date / time for submission of completed assessment
@@ -80,8 +84,8 @@ public class MathsMCQ implements Assessment{
 
     // Return studentid associated with this assessment object
     // This will be preset on the server before object is downloaded
-    public int getAssociatedID() {
+    public String getAssociatedID() {
         //Implement later
-        return 0;
+        return "x";
     }
 }

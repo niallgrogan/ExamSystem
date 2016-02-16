@@ -14,7 +14,7 @@ public class MathClient {
             //Logging in
             Scanner in = new Scanner(System.in);
             System.out.println("Enter Username");
-            int username = Integer.parseInt(in.nextLine());
+            String username = in.nextLine();
             System.out.println("Enter Password");
             String password = in.nextLine();
             //Login token received

@@ -27,7 +27,7 @@ public interface Assessment extends Serializable {
 
 	// Return studentid associated with this assessment object
 	// This will be preset on the server before object is downloaded
-	public int getAssociatedID();
+	public String getAssociatedID();
 
 }
 
