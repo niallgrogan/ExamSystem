@@ -11,6 +11,10 @@ import java.util.Scanner;
 public class MathClient {
     public static void main(String args[]) {
         try {
+            if (System.getSecurityManager() == null) {
+                System.setProperty("java.security.policy", "java.policy");
+                System.setSecurityManager(new SecurityManager());
+            }
             //Setting up registry and server
             String name = "ExamServer";
             Registry registry = LocateRegistry.getRegistry("localhost");
@@ -21,7 +25,6 @@ public class MathClient {
             String user = "";
 
             String username = "";
-            String password = "";
             int token = 0;
 
             //Logging in
@@ -29,7 +32,7 @@ public class MathClient {
                 System.out.println("Enter Username");
                 username = in.nextLine();
                 System.out.println("Enter Password");
-                password = in.nextLine();
+                String password = in.nextLine();
                 token = exam.login(username, password);
                 if (token == 100) {
                     loginSuccesfull = false;
@@ -45,7 +48,7 @@ public class MathClient {
 
                 Assessment a = startAssignment(in, exam, token, username);
                 user = a.getAssociatedID();
-                gradeAssessment(in, exam, token, username, a);
+                gradeAssessment(exam, token, username, a);
 
                 System.out.println("\nWould you like to make another submission? (y/n)");
                 String reSubmission = in.nextLine();
@@ -54,7 +57,8 @@ public class MathClient {
                 }
             }
 
-            System.out.println("\nUser '"+user+"' has been logged out");
+            System.out.println("\nUser '"+user+"' has been logged out"
+                    +"Thanks for using the exam system");
         }
         catch (Exception e) {
             System.err.println("MathClient exception");
@@ -91,6 +95,11 @@ public class MathClient {
                                            + "\nPlease come back later");
             else System.out.println(l);
         }
+        else {
+            // log user out
+            System.out.println("\nThanks for using the exam system. \nYou have been logged out.");
+            System.exit(0);
+        }
     }
 
     private static Assessment startAssignment(Scanner in, ExamServer exam, int token, String username) throws
@@ -126,11 +135,11 @@ public class MathClient {
         return a;
     }
 
-    private static void gradeAssessment(Scanner in, ExamServer exam, int token, String username, Assessment a) throws
+    private static void gradeAssessment(ExamServer exam, int token, String username, Assessment a) throws
            UnauthorizedAccess, NoMatchingAssessment, RemoteException, InvalidQuestionNumber {
-        exam.submitAssessment(token,username,a);
+        exam.submitAssessment(token, a);
         double counter=0.0;
-        boolean[] results = exam.queryResults(token, username, "4ECE");
+        boolean[] results = exam.queryResults(token, username);
         System.out.println("____________________________________________");
         for(int i=0; i<results.length; i++) {
             if(results[i]) {

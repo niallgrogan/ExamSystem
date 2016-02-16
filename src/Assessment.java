@@ -9,34 +9,30 @@ import java.io.Serializable;
 public interface Assessment extends Serializable {
 
 	// Return information about the assessment	
-	public String getInformation();
+	String getInformation();
 
 	// Return the final date / time for submission of completed assessment
-	public Date getClosingDate();
+	Date getClosingDate();
 
 	// Return a list of all questions and answer options
-	public List<Question> getQuestions();
+	List<Question> getQuestions();
 
 	// Return one question only with answer options
-	public Question getQuestion(int questionNumber) throws 
+	Question getQuestion(int questionNumber) throws
 		InvalidQuestionNumber;
 
 	// Answer a particular question
-	public void selectAnswer(int questionNumber, int optionNumber) throws
+	void selectAnswer(int questionNumber, int optionNumber) throws
 		InvalidQuestionNumber, InvalidOptionNumber;
 
 	// Return selected answer or zero if none selected yet
-	public int getSelectedAnswer(int questionNumber);
+	int getSelectedAnswer(int questionNumber);
 
 	// Return studentid associated with this assessment object
 	// This will be preset on the server before object is downloaded
-	public String getAssociatedID();
+	String getAssociatedID();
 
-	public int[] getAnswers();
-
-	public int[] getUserAnswers();
+	//Returns the correct answers to an assessment
+	int[] getAnswers();
 
 }
-
-
-

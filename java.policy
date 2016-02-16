@@ -1,0 +1,7 @@
+grant {
+  permission java.security.AllPermission;
+};
+
+grant codeBase "file:/out/production/ExamSystem/" {
+    permission java.security.AllPermission;
+};

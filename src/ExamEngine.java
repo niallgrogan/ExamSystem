@@ -11,7 +11,6 @@ import java.util.*;
 public class ExamEngine implements ExamServer {
 
     private List<String> assessmentList = new ArrayList<>(1);
-    private Assessment ass1;
     private Map<String, Assessment> completedAssignments = new HashMap<>();
 
     // Constructor is required
@@ -70,17 +69,11 @@ public class ExamEngine implements ExamServer {
         try { 
 	    	if (token == 999) {
 	            if (studentid.equals("a")) {
-	                if (courseCode.equals("Maths MCQ")) {
-                        ass1 = new MathsMCQ(studentid);
-                        return ass1;
-	                }
-                    else if(courseCode.equals("Programming MCQ")) {
-                        ass1 = new ProgrammingMCQ(studentid);
-                        return ass1;
+                    switch(courseCode) {
+                        case "Maths MCQ": return new MathsMCQ(studentid);
+                        case "Programming MCQ": return new ProgrammingMCQ(studentid);
+                        default: throw new NoMatchingAssessment("No Matching Assessment for Course Code " + courseCode);
                     }
-	                else {
-	                    throw new NoMatchingAssessment("No Matching Assessment for Course Code " + courseCode);
-	                }
 	            }
 	            else {
 	                throw new NoMatchingAssessment("No Matching Assessment for Student " + studentid);
@@ -96,11 +89,11 @@ public class ExamEngine implements ExamServer {
     }
 
     // Submit a completed assessment
-    public void submitAssessment(int token, String studentid, Assessment completed) throws 
+    public void submitAssessment(int token, Assessment completed) throws
                 UnauthorizedAccess, NoMatchingAssessment, RemoteException {
 
         //For the moment we are assuming the user can only submit one type of assignment
-        String identifier = studentid;
+        String identifier = completed.getAssociatedID();
         Date timeOfSubmission = new Date();
         if(timeOfSubmission.before(completed.getClosingDate())) {
             completedAssignments.put(identifier, completed);
@@ -110,15 +103,14 @@ public class ExamEngine implements ExamServer {
         }
     }
 
-    public boolean[] queryResults(int token, String studentid, String courseCode) throws
+    public boolean[] queryResults(int token, String studentid) throws
                 UnauthorizedAccess, NoMatchingAssessment, RemoteException {
 
-        int[] usersAnswers = completedAssignments.get(studentid).getUserAnswers();
         int[] answers = completedAssignments.get(studentid).getAnswers();
         boolean[] results = new boolean[answers.length];
 
-        for(int i=0; i<usersAnswers.length; i++) {
-            if(usersAnswers[i] == answers[i]) {
+        for(int i=0; i<answers.length; i++) {
+            if(completedAssignments.get(studentid).getSelectedAnswer(i+1) == answers[i]) {
                 results[i] = true;
             }
             else {results[i] = false;}
@@ -128,9 +120,10 @@ public class ExamEngine implements ExamServer {
     }
 
     public static void main(String[] args) {
-//        if (System.getSecurityManager() == null) {
-//            System.setSecurityManager(new SecurityManager());
-//        }
+        if (System.getSecurityManager() == null) {
+            System.setProperty("java.security.policy", "java.policy");
+            System.setSecurityManager(new SecurityManager());
+        }
         try {
             String name = "ExamServer";
             ExamServer engine = new ExamEngine();

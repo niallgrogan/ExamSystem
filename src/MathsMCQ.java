@@ -31,16 +31,10 @@ public class MathsMCQ implements Assessment {
         return answers;
     }
 
-    public int[] getUserAnswers() {
-        return selectedAnswers;
-    }
-
     public String getInformation() {
-    	String info = "This is a Maths Assessment" +
+    	return "This is a Maths Assessment" +
     			      "\nNumber of questions: " + Integer.toString(numQuestions) + 
     			      "\nClosing Date: " + closingDate;
-    	
-        return info;
     }
 
     // Return the final date / time for submission of completed assessment
