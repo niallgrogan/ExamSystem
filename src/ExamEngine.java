@@ -10,21 +10,21 @@ import java.util.*;
 
 public class ExamEngine implements ExamServer {
 
+    //Contains list of assessment names
     private List<String> assessmentList = new ArrayList<>(1);
+    // Key-value pairs of assessments linked to a student id
     private Map<String, Assessment> completedAssignments = new HashMap<>();
 
-    // Constructor is required
     public ExamEngine() {
-        //super();
+        //Setting Assessment names
         assessmentList.add("Maths MCQ");
         assessmentList.add("Programming MCQ");
     }
 
-    // Implement the methods defined in the ExamServer interface...
     // Return an access token that allows access to the server for some time period
     public int login(String studentid, String password) throws 
                 UnauthorizedAccess, RemoteException {
-
+        //Only permitting username "a" and password "a"
         try {
             if (studentid.equals("a")) {
                 if (password.equals("a")) {
@@ -33,11 +33,12 @@ public class ExamEngine implements ExamServer {
                 else {throw new UnauthorizedAccess("Invalid Password");}
             }
             else {throw new UnauthorizedAccess("Invalid Student ID");}
-        } catch (UnauthorizedAccess e) {
+        }
+        //Returns an error code which can be handled by the client
+        catch (UnauthorizedAccess e) {
             int errorCode = 100;
             System.out.println("Error Code: " + errorCode);
             System.out.println(e.getMessage() + "\n");
-
             return errorCode;
         }
     }
@@ -45,7 +46,7 @@ public class ExamEngine implements ExamServer {
     // Return a summary list of Assessments currently available for this studentid
     public List<String> getAvailableSummary(int token, String studentid) throws
                 UnauthorizedAccess, NoMatchingAssessment, RemoteException {
-
+        //Login token of 999 is always used
         try {
             if (token == 999) {
                 if (studentid.equals("a")) {
@@ -75,31 +76,28 @@ public class ExamEngine implements ExamServer {
                         default: throw new NoMatchingAssessment("No Matching Assessment for Course Code " + courseCode);
                     }
 	            }
-	            else {
-	                throw new NoMatchingAssessment("No Matching Assessment for Student " + studentid);
-	            }
+	            else {throw new NoMatchingAssessment("No Matching Assessment for Student " + studentid);}
 	        }
-	        else {
-	            throw new UnauthorizedAccess("Student Does not have Access to this List");
-	        }
-        } catch(Exception e) {
-        	System.out.println(e.getMessage());
-        }
+	        else {throw new UnauthorizedAccess("Student Does not have Access to this List");}
+        } catch(Exception e) {System.out.println(e.getMessage());}
+
         return null;
     }
 
-    // Submit a completed assessment
-    public void submitAssessment(int token, Assessment completed) throws
+    // Submit a completed assessment (returns a confirmation string)
+    public String submitAssessment(int token, Assessment completed) throws
                 UnauthorizedAccess, NoMatchingAssessment, RemoteException {
 
         //For the moment we are assuming the user can only submit one type of assignment
         String identifier = completed.getAssociatedID();
         Date timeOfSubmission = new Date();
+        //Ensures the user cannot submit after
         if(timeOfSubmission.before(completed.getClosingDate())) {
             completedAssignments.put(identifier, completed);
+            return "Submission Confirmed";
         }
         else {
-            System.out.println("Deadline Expired");
+            return "Deadline Expired";
         }
     }
 

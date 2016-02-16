@@ -58,7 +58,7 @@ public class MathClient {
             }
 
             System.out.println("\nUser '"+user+"' has been logged out"
-                    +"Thanks for using the exam system");
+                    +"\nThanks for using the exam system");
         }
         catch (Exception e) {
             System.err.println("MathClient exception");
@@ -137,7 +137,11 @@ public class MathClient {
 
     private static void gradeAssessment(ExamServer exam, int token, String username, Assessment a) throws
            UnauthorizedAccess, NoMatchingAssessment, RemoteException, InvalidQuestionNumber {
-        exam.submitAssessment(token, a);
+        String confirmation = exam.submitAssessment(token, a);
+        if(confirmation.equals("Deadline Expired")) {
+            System.out.println("Deadline Expired\nYou will now be signed out");
+            System.exit(0);
+        }
         double counter=0.0;
         boolean[] results = exam.queryResults(token, username);
         System.out.println("____________________________________________");

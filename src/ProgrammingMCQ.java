@@ -11,7 +11,7 @@ public class ProgrammingMCQ implements Assessment {
 
     private int numQuestions = 2;
     private int numAnswerOptions = 4;
-    private String closingDate = "21/12/2016";
+    private String closingDate = "21/12/2015";
     private List<Question> questionList = new ArrayList<>(2);
     private int[] selectedAnswers = {0,0};
     private int[] answers = {1,4};
